@@ -6,7 +6,7 @@ const tokens = (n) => {
 }
 
 describe('Token', () => {
-  let token, accounts, deployer
+  let token, accounts, deployer, receiver, exchange
 
   beforeEach(async () => {
     const Token = await ethers.getContractFactory('Token')
@@ -26,7 +26,7 @@ describe('Token', () => {
     const decimals = '18'
     const totalSupply = tokens('1000000')
 
-   it('has correct name', async () => {
+    it('has correct name', async () => {
       expect(await token.name()).to.equal(name)
     })
 
