@@ -284,7 +284,7 @@ describe('Exchange', () => {
 
         beforeEach(async () => {
           // user2 fills order
-          transaction = await exchange.connect(user2).fillOrder('1')
+          transaction = await exchange.connect(user2).fillOrder(1)
           result = await transaction.wait()
         })
 

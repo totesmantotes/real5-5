@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Suspense } from "react";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { appRoutes } from "./routes";
+import Navigation from "./components/Navigation";
 
 function App() {
+  const [account, setAccount] = useState(null);
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={() => <h1>Loading...</h1>}>
+      <Routes location={location}>
+        {appRoutes.map((route) => (
+          <Route
+            key={route.path}
+            exact
+            path={route.path}
+            element={
+              route.requiresAuth && !account ? (
+                <Navigate replace to={"/login"} />
+              ) : (
+                <route.component
+                  {...{
+                    account,
+                    setAccount,
+                  }}
+                />
+              )
+            }
+          />
+        ))}
+      </Routes>
+      <Navigation account={account} setAccount={setAccount} />
+    </Suspense>
   );
 }
 
